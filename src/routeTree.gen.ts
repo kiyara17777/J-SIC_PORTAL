@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as IndustryRouteImport } from './routes/industry'
 import { Route as ProposalRouteImport } from './routes/proposal'
 import { Route as ReportRouteImport } from './routes/report'
 import { Route as TrackRouteImport } from './routes/track'
@@ -18,6 +19,11 @@ import { Route as UniversityRouteImport } from './routes/university'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndustryRoute = IndustryRouteImport.update({
+  id: '/industry',
+  path: '/industry',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProposalRoute = ProposalRouteImport.update({
@@ -43,6 +49,7 @@ const UniversityRoute = UniversityRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/industry': typeof IndustryRoute
   '/proposal': typeof ProposalRoute
   '/report': typeof ReportRoute
   '/track': typeof TrackRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/industry': typeof IndustryRoute
   '/proposal': typeof ProposalRoute
   '/report': typeof ReportRoute
   '/track': typeof TrackRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/industry': typeof IndustryRoute
   '/proposal': typeof ProposalRoute
   '/report': typeof ReportRoute
   '/track': typeof TrackRoute
@@ -65,14 +74,23 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/proposal' | '/report' | '/track' | '/university'
+  fullPaths:
+    '/' | '/industry' | '/proposal' | '/report' | '/track' | '/university'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/proposal' | '/report' | '/track' | '/university'
-  id: '__root__' | '/' | '/proposal' | '/report' | '/track' | '/university'
+  to: '/' | '/industry' | '/proposal' | '/report' | '/track' | '/university'
+  id:
+    | '__root__'
+    | '/'
+    | '/industry'
+    | '/proposal'
+    | '/report'
+    | '/track'
+    | '/university'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  IndustryRoute: typeof IndustryRoute
   ProposalRoute: typeof ProposalRoute
   ReportRoute: typeof ReportRoute
   TrackRoute: typeof TrackRoute
@@ -86,6 +104,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/industry': {
+      id: '/industry'
+      path: '/industry'
+      fullPath: '/industry'
+      preLoaderRoute: typeof IndustryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/proposal': {
@@ -121,6 +146,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  IndustryRoute: IndustryRoute,
   ProposalRoute: ProposalRoute,
   ReportRoute: ReportRoute,
   TrackRoute: TrackRoute,
