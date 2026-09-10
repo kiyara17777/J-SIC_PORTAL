@@ -227,8 +227,9 @@ function ReportPage() {
                   onCheckedChange={setDuplicateMode}
                 />
                 <Label htmlFor="dupe" className="text-xs font-medium">
-                  Demo: simulate duplicate-match outcome
+                  Add my report to a similar existing problem if one is found
                 </Label>
+
               </div>
             </div>
           </div>
@@ -248,8 +249,9 @@ function ReportPage() {
           </div>
           <div className="surface-card overflow-hidden">
             <div className="border-b border-border bg-secondary/50 px-5 py-3 text-sm font-semibold">
-              Both possible outcomes
+              How your report is acknowledged
             </div>
+
             <div className="grid gap-3 p-5 text-sm">
               <div className="rounded-lg border border-success/30 bg-success/8 p-3">
                 <p className="font-semibold text-success">New problem accepted</p>
