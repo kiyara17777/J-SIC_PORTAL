@@ -12,6 +12,8 @@ import {
   GraduationCap,
   HeartPulse,
   Tractor,
+  Leaf,
+  HardHat,
   AlertTriangle,
   CheckCircle2,
   Clock3,
@@ -52,14 +54,8 @@ import {
 } from "@/components/ui/table";
 import { UpvoteBadge } from "@/components/UpvoteBadge";
 import { DomainBadge } from "@/components/DomainBadge";
-import {
-  CATEGORY_CHART,
-  DEPARTMENTS,
-  DISTRICT_HEAT,
-  PROBLEMS,
-  STATUS_CHART,
-  TOP_UNIVERSITIES,
-} from "@/lib/jsic-data";
+import { JharkhandMap } from "@/components/JharkhandMap";
+import { DEPARTMENTS, DEPT_DATA, type DeptProblem } from "@/lib/jsic-data";
 
 export const Route = createFileRoute("/government")({
   head: () => ({
@@ -68,7 +64,7 @@ export const Route = createFileRoute("/government")({
       {
         name: "description",
         content:
-          "Department-wise J-SIC analytics: problem volumes, resolution rate, funding routed, district heat and milestone verification.",
+          "Department-wise J-SIC analytics: problem volumes, resolution rate, funding routed, district concentration and milestone verification.",
       },
       { property: "og:title", content: "Government Analytics — J-SIC Portal" },
       {
@@ -87,13 +83,9 @@ const DEPT_ICONS: Record<string, LucideIcon> = {
   HeartPulse,
   Building2,
   Tractor,
+  Leaf,
+  HardHat,
 };
-
-const ITEMS: SideItem[] = [
-  { id: "overview", label: "Analytics Overview", icon: BarChart3 },
-  { id: "verify", label: "Verification Queue", icon: ClipboardCheck, badge: "3" },
-  { id: "universities", label: "Top Universities", icon: Trophy },
-];
 
 const CHART_COLORS = [
   "var(--color-chart-1)",
@@ -106,7 +98,7 @@ const CHART_COLORS = [
 function GovernmentPage() {
   const [dept, setDept] = useState<(typeof DEPARTMENTS)[number] | null>(null);
   const [active, setActive] = useState("overview");
-  const [verifying, setVerifying] = useState<(typeof PROBLEMS)[number] | null>(null);
+  const [verifying, setVerifying] = useState<DeptProblem | null>(null);
 
   if (!dept) {
     return (
@@ -129,7 +121,10 @@ function GovernmentPage() {
               return (
                 <button
                   key={d.id}
-                  onClick={() => setDept(d)}
+                  onClick={() => {
+                    setDept(d);
+                    setActive("overview");
+                  }}
                   className="surface-card group flex items-center gap-4 p-5 text-left transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-lift)]"
                 >
                   <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
@@ -149,14 +144,54 @@ function GovernmentPage() {
     );
   }
 
-  const KPIS = [
-    { label: `Total Problems · ${dept.name}`, value: "312", icon: BarChart3, tone: "text-primary" },
-    { label: "Verified vs Pending", value: "268 / 44", icon: CheckCircle2, tone: "text-success" },
-    { label: "Resolution Rate", value: "71%", icon: Clock3, tone: "text-accent" },
-    { label: "Funding Routed", value: "₹ 4.86 Cr", icon: IndianRupee, tone: "text-primary" },
+  const data = DEPT_DATA[dept.id] ?? DEPT_DATA["agri"]!;
+  const DeptIcon = DEPT_ICONS[dept.icon] ?? Building2;
+  const pendingCount = data.problems.filter((p) => p.claim).length;
+
+  const ITEMS: SideItem[] = [
+    { id: "overview", label: "Analytics Overview", icon: BarChart3 },
+    {
+      id: "verify",
+      label: "Department Problems",
+      icon: ClipboardCheck,
+      badge: String(pendingCount),
+    },
+    { id: "universities", label: "Top Universities", icon: Trophy },
   ];
 
-  const maxHeat = Math.max(...DISTRICT_HEAT.map((d) => d.count));
+  const KPIS = [
+    {
+      label: `Total Problems · ${dept.name}`,
+      value: String(data.total),
+      icon: BarChart3,
+      tone: "text-primary",
+    },
+    {
+      label: "Verified vs Pending",
+      value: `${data.verified} / ${data.pending}`,
+      icon: CheckCircle2,
+      tone: "text-success",
+    },
+    { label: "Resolution Rate", value: data.resolutionRate, icon: Clock3, tone: "text-accent" },
+    { label: "Funding Routed", value: data.funding, icon: IndianRupee, tone: "text-primary" },
+  ];
+
+  const DeptHeader = (
+    <div className="surface-card mb-6 flex flex-wrap items-center gap-3 p-4">
+      <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
+        <DeptIcon className="size-5" />
+      </span>
+      <div>
+        <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+          Signed in as
+        </p>
+        <p className="font-semibold">{dept.name}</p>
+      </div>
+      <Button variant="outline" size="sm" className="ml-auto" onClick={() => setDept(null)}>
+        Switch department
+      </Button>
+    </div>
+  );
 
   return (
     <DashboardShell
@@ -167,16 +202,13 @@ function GovernmentPage() {
       active={active}
       onSelect={setActive}
     >
+      {DeptHeader}
+
       {active === "overview" && (
         <>
           <SectionHeader
             title="Analytics Overview"
-            description={`Department-scoped view for ${dept.name}.`}
-            action={
-              <Button variant="outline" onClick={() => setDept(null)}>
-                Switch department
-              </Button>
-            }
+            description={`Problems, funding and verification status for the ${dept.name}.`}
           />
 
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -185,9 +217,9 @@ function GovernmentPage() {
                 key={k.label}
                 className="surface-card p-5 transition-shadow hover:shadow-[var(--shadow-lift)]"
               >
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-2">
                   <p className="text-xs font-medium text-muted-foreground">{k.label}</p>
-                  <k.icon className={`size-4 ${k.tone}`} />
+                  <k.icon className={`size-4 shrink-0 ${k.tone}`} />
                 </div>
                 <p className="mt-2 text-2xl font-bold tabular-nums">{k.value}</p>
               </div>
@@ -199,7 +231,7 @@ function GovernmentPage() {
               <h3 className="text-sm font-semibold">Problems by category</h3>
               <div className="mt-4 h-72">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={CATEGORY_CHART}>
+                  <BarChart data={data.categories}>
                     <XAxis
                       dataKey="name"
                       tick={{ fontSize: 11 }}
@@ -230,7 +262,7 @@ function GovernmentPage() {
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
-                      data={STATUS_CHART}
+                      data={data.status}
                       dataKey="value"
                       nameKey="name"
                       innerRadius="55%"
@@ -238,7 +270,7 @@ function GovernmentPage() {
                       paddingAngle={3}
                       stroke="none"
                     >
-                      {STATUS_CHART.map((_, i) => (
+                      {data.status.map((_, i) => (
                         <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
                       ))}
                     </Pie>
@@ -254,7 +286,7 @@ function GovernmentPage() {
                 </ResponsiveContainer>
               </div>
               <ul className="grid grid-cols-2 gap-2 text-xs">
-                {STATUS_CHART.map((s, i) => (
+                {data.status.map((s, i) => (
                   <li key={s.name} className="flex items-center gap-1.5">
                     <span
                       className="size-2.5 rounded-full"
@@ -272,15 +304,16 @@ function GovernmentPage() {
               <h3 className="flex items-center gap-2 text-sm font-semibold">
                 <MapIcon className="size-4 text-primary" /> District-wise concentration
               </h3>
-              <div className="mt-4 grid grid-cols-3 gap-2">
-                {DISTRICT_HEAT.map((d) => {
-                  const intensity = d.count / maxHeat;
+              <JharkhandMap data={data.heat} />
+              <div className="grid grid-cols-3 gap-2">
+                {data.heat.map((d) => {
+                  const intensity = d.count / Math.max(...data.heat.map((h) => h.count));
                   return (
                     <div
                       key={d.name}
                       className="rounded-lg border border-border p-3 text-center transition-transform hover:scale-[1.03]"
                       style={{
-                        background: `color-mix(in oklab, var(--color-accent) ${Math.round(intensity * 78)}%, var(--color-card))`,
+                        background: `color-mix(in oklab, var(--color-accent) ${Math.round(intensity * 70)}%, var(--color-card))`,
                       }}
                       title={`${d.name}: ${d.count} problems`}
                     >
@@ -301,20 +334,20 @@ function GovernmentPage() {
               <span className="inline-flex items-center gap-1.5 rounded-full bg-destructive/12 px-2.5 py-0.5 text-xs font-semibold text-destructive">
                 <AlertTriangle className="size-3.5" /> Unfunded — needs attention
               </span>
-              <h3 className="mt-3 text-lg font-bold">Coal dust affecting school attendance</h3>
+              <h3 className="mt-3 text-lg font-bold">{data.unfunded.title}</h3>
               <p className="mt-1 text-sm text-muted-foreground">
-                Dhanbad · assigned 34 days ago, no funder has come forward yet.
+                {data.unfunded.district} · {data.unfunded.note}
               </p>
               <div className="mt-4 flex flex-wrap items-center gap-2">
-                <DomainBadge domain="Environment" />
-                <UpvoteBadge count={31} label="reports" />
+                <DomainBadge domain={data.unfunded.domain} />
+                <UpvoteBadge count={data.unfunded.upvotes} label="reports" />
               </div>
               <Button
                 className="mt-4"
                 variant="destructive"
                 onClick={() =>
-                  toast.info("Escalated to CSR outreach cell", {
-                    description: "12 industry partners in Dhanbad will be notified.",
+                  toast.info("Escalated to the CSR outreach cell", {
+                    description: `Industry partners active in ${data.unfunded.district} will be notified.`,
                   })
                 }
               >
@@ -328,13 +361,8 @@ function GovernmentPage() {
       {active === "verify" && (
         <>
           <SectionHeader
-            title="Verification Queue"
-            description="Problems tagged to your department. Verify each stage change claimed by the university."
-            action={
-              <Button variant="outline" onClick={() => setDept(null)}>
-                Switch department
-              </Button>
-            }
+            title="Department Problems"
+            description={`Problems tagged to the ${dept.name}. Verify each stage change claimed by the university.`}
           />
           <div className="surface-card overflow-hidden">
             <div className="overflow-x-auto">
@@ -350,8 +378,8 @@ function GovernmentPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {PROBLEMS.map((p) => (
-                    <TableRow key={p.id} className="transition-colors hover:bg-secondary/40">
+                  {data.problems.map((p) => (
+                    <TableRow key={p.ref} className="transition-colors hover:bg-secondary/40">
                       <TableCell className="font-medium">
                         <span className="block">{p.title}</span>
                         <span className="text-xs text-muted-foreground">#{p.ref}</span>
@@ -390,7 +418,7 @@ function GovernmentPage() {
         <>
           <SectionHeader
             title="Top-performing Universities"
-            description="Ranked by projects completed through J-SIC."
+            description={`Ranked by projects completed for the ${dept.name}.`}
           />
           <div className="surface-card overflow-hidden">
             <div className="overflow-x-auto">
@@ -405,7 +433,7 @@ function GovernmentPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {TOP_UNIVERSITIES.map((u, i) => (
+                  {data.universities.map((u, i) => (
                     <TableRow key={u.name} className="transition-colors hover:bg-secondary/40">
                       <TableCell className="font-semibold tabular-nums">{i + 1}</TableCell>
                       <TableCell className="font-medium">{u.name}</TableCell>
