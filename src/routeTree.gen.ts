@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as GovernmentRouteImport } from './routes/government'
 import { Route as IndustryRouteImport } from './routes/industry'
 import { Route as ProposalRouteImport } from './routes/proposal'
 import { Route as ReportRouteImport } from './routes/report'
@@ -19,6 +20,11 @@ import { Route as UniversityRouteImport } from './routes/university'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GovernmentRoute = GovernmentRouteImport.update({
+  id: '/government',
+  path: '/government',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndustryRoute = IndustryRouteImport.update({
@@ -49,6 +55,7 @@ const UniversityRoute = UniversityRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/government': typeof GovernmentRoute
   '/industry': typeof IndustryRoute
   '/proposal': typeof ProposalRoute
   '/report': typeof ReportRoute
@@ -57,6 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/government': typeof GovernmentRoute
   '/industry': typeof IndustryRoute
   '/proposal': typeof ProposalRoute
   '/report': typeof ReportRoute
@@ -66,6 +74,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/government': typeof GovernmentRoute
   '/industry': typeof IndustryRoute
   '/proposal': typeof ProposalRoute
   '/report': typeof ReportRoute
@@ -75,12 +84,26 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/industry' | '/proposal' | '/report' | '/track' | '/university'
+    | '/'
+    | '/government'
+    | '/industry'
+    | '/proposal'
+    | '/report'
+    | '/track'
+    | '/university'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/industry' | '/proposal' | '/report' | '/track' | '/university'
+  to:
+    | '/'
+    | '/government'
+    | '/industry'
+    | '/proposal'
+    | '/report'
+    | '/track'
+    | '/university'
   id:
     | '__root__'
     | '/'
+    | '/government'
     | '/industry'
     | '/proposal'
     | '/report'
@@ -90,6 +113,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  GovernmentRoute: typeof GovernmentRoute
   IndustryRoute: typeof IndustryRoute
   ProposalRoute: typeof ProposalRoute
   ReportRoute: typeof ReportRoute
@@ -104,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/government': {
+      id: '/government'
+      path: '/government'
+      fullPath: '/government'
+      preLoaderRoute: typeof GovernmentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/industry': {
@@ -146,6 +177,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  GovernmentRoute: GovernmentRoute,
   IndustryRoute: IndustryRoute,
   ProposalRoute: ProposalRoute,
   ReportRoute: ReportRoute,
