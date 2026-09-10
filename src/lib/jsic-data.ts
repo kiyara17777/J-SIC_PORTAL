@@ -34,13 +34,16 @@ export const DISTRICTS = [
 ];
 
 export const DEPARTMENTS = [
-  { id: "agri", name: "Agriculture Dept", icon: "Sprout" },
-  { id: "water", name: "Water Resources Dept", icon: "Droplets" },
-  { id: "edu", name: "Education Dept", icon: "GraduationCap" },
-  { id: "health", name: "Health & Family Welfare Dept", icon: "HeartPulse" },
-  { id: "urban", name: "Urban Development Dept", icon: "Building2" },
-  { id: "rural", name: "Rural Development Dept", icon: "Tractor" },
+  { id: "agri", name: "Agriculture Department", icon: "Sprout" },
+  { id: "water", name: "Water Department", icon: "Droplets" },
+  { id: "edu", name: "Education Department", icon: "GraduationCap" },
+  { id: "health", name: "Healthcare Department", icon: "HeartPulse" },
+  { id: "env", name: "Environment Department", icon: "Leaf" },
+  { id: "rural", name: "Rural Development Department", icon: "Tractor" },
+  { id: "urban", name: "Urban Development Department", icon: "Building2" },
+  { id: "pwd", name: "Public Works Department", icon: "HardHat" },
 ];
+
 
 export const DOMAIN_TONES: Record<string, string> = {
   Agriculture: "bg-[oklch(0.94_0.06_150)] text-[oklch(0.38_0.11_155)]",
