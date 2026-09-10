@@ -155,8 +155,9 @@ export function DashboardShell({
         ))}
       </nav>
       <div className="mt-auto rounded-xl border border-sidebar-border p-3 text-xs text-sidebar-foreground/70">
-        Demo data only. Switch roles from the top bar to walk through the full flow.
+        Switch roles from the top bar to move across the problem-to-solution pipeline.
       </div>
+
     </div>
   );
 

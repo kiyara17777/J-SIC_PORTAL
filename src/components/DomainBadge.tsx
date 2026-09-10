@@ -6,7 +6,7 @@ export function DomainBadge({ domain, className }: { domain: string; className?:
     <span
       className={cn(
         "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold",
-        DOMAIN_TONES[domain] ?? DOMAIN_TONES.Other,
+        DOMAIN_TONES[domain] ?? DOMAIN_TONES["Other"],
         className,
       )}
     >
