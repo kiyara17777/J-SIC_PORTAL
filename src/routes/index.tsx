@@ -132,8 +132,9 @@ function Landing() {
         </div>
       </section>
 
-      <section className="mx-auto -mt-8 max-w-[1400px] px-4 sm:px-6">
-        <div className="surface-card grid grid-cols-2 divide-border sm:grid-cols-4 sm:divide-x">
+      <section className="relative z-10 mx-auto mt-8 max-w-[1400px] px-4 sm:px-6 lg:-mt-10">
+        <div className="surface-card grid grid-cols-1 divide-y divide-border sm:grid-cols-2 sm:divide-y-0 sm:divide-x lg:grid-cols-4">
+
           {STATS.map((s) => (
             <div key={s.label} className="flex items-center gap-3 p-5">
               <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-secondary text-primary">
@@ -176,10 +177,11 @@ function Landing() {
 
       <footer className="border-t border-border bg-card">
         <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-3 px-4 py-6 text-xs text-muted-foreground sm:px-6">
-          <p>J-SIC Portal · Jharkhand Societal Innovation Collaboration · Demo build</p>
-          <p>All figures on this portal are illustrative sample data.</p>
+          <p>J-SIC Portal · Jharkhand Societal Innovation Collaboration</p>
+          <p>A Government of Jharkhand innovation initiative.</p>
         </div>
       </footer>
+
     </PageShell>
   );
 }
