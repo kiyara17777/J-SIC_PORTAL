@@ -899,4 +899,3 @@ export const DEPT_DATA: Record<string, DeptData> = {
   },
 };
 
-];
