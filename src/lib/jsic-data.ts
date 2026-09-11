@@ -184,6 +184,7 @@ export const PROPOSALS = [
     funding: "₹ 8,50,000",
     timeline: "7 months · Pilot on 40 farms",
     stage: "Prototype",
+    needs: ["Funding", "Manufacturing", "Testing Site"],
   },
   {
     id: "pr2",
@@ -193,6 +194,7 @@ export const PROPOSALS = [
     funding: "₹ 6,20,000",
     timeline: "9 months · Pilot on 25 farms",
     stage: "Idea",
+    needs: ["Funding", "Manufacturing", "Mentorship"],
   },
   {
     id: "pr3",
@@ -202,6 +204,7 @@ export const PROPOSALS = [
     funding: "₹ 12,00,000",
     timeline: "12 months · 3 blocks",
     stage: "Pilot-ready",
+    needs: ["Funding", "Testing Site"],
   },
   {
     id: "pr4",
@@ -211,6 +214,7 @@ export const PROPOSALS = [
     funding: "₹ 4,80,000",
     timeline: "6 months · 2 blocks",
     stage: "Prototype",
+    needs: ["Funding", "Mentorship"],
   },
 ];
 
