@@ -13,10 +13,20 @@ import {
   CheckCircle2,
   IndianRupee,
   CalendarDays,
+  Eye,
+  ClipboardList,
 } from "lucide-react";
 import { DashboardShell, type SideItem } from "@/components/AppShell";
 import { SectionHeader } from "@/components/SectionHeader";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { UpvoteBadge } from "@/components/UpvoteBadge";
 import { DomainBadge } from "@/components/DomainBadge";
 import { PROBLEMS, PROPOSALS } from "@/lib/jsic-data";
@@ -67,9 +77,11 @@ function IndustryPage() {
   const [active, setActive] = useState("open");
   const [openProblem, setOpenProblem] = useState<string | null>(null);
   const [fundedId, setFundedId] = useState<string | null>(null);
+  const [detailId, setDetailId] = useState<string | null>(null);
 
   const openProjects = PROBLEMS.filter((p) => INTERESTS.includes(p.domain));
   const selected = PROBLEMS.find((p) => p.id === openProblem);
+  const detail = PROPOSALS.find((p) => p.id === detailId);
 
   return (
     <DashboardShell
@@ -286,6 +298,86 @@ function IndustryPage() {
           </div>
         </>
       )}
+      <Dialog open={!!detail} onOpenChange={(o) => !o && setDetailId(null)}>
+        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>{detail?.university}</DialogTitle>
+            <DialogDescription>{selected?.title}</DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div className="flex flex-wrap items-center gap-2">
+              {selected && <DomainBadge domain={selected.domain} />}
+              <span className="inline-flex items-center gap-1 rounded-full bg-secondary px-2.5 py-0.5 text-xs font-semibold">
+                <MapPin className="size-3.5" /> {selected?.district}
+              </span>
+              <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
+                Current stage: {detail?.stage}
+              </span>
+            </div>
+
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Solution summary
+              </p>
+              <p className="mt-1 text-sm">{detail?.summary}</p>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="rounded-xl border border-border bg-secondary/50 p-4">
+                <p className="text-xs font-medium text-muted-foreground">Funding requested</p>
+                <p className="mt-1 inline-flex items-center gap-1 text-lg font-bold tabular-nums">
+                  <IndianRupee className="size-4 text-primary" />
+                  {detail?.funding.replace("\u20b9 ", "")}
+                </p>
+              </div>
+              <div className="rounded-xl border border-border bg-secondary/50 p-4">
+                <p className="text-xs font-medium text-muted-foreground">Timeline</p>
+                <p className="mt-1 inline-flex items-center gap-1.5 text-lg font-bold">
+                  <CalendarDays className="size-4 text-primary" />
+                  {detail?.timeline}
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <ClipboardList className="size-3.5" /> Requirements
+              </p>
+              <ul className="mt-2 flex flex-wrap gap-2">
+                {(detail?.needs ?? []).map((n) => (
+                  <li
+                    key={n}
+                    className="rounded-full bg-accent/12 px-2.5 py-0.5 text-xs font-semibold text-accent"
+                  >
+                    {n}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDetailId(null)}>
+              Close
+            </Button>
+            <Button
+              variant="accent"
+              onClick={() => {
+                if (!detail) return;
+                setFundedId(detail.id);
+                setDetailId(null);
+                toast.success("Funding confirmed", {
+                  description: `${detail.university} \u2014 ${detail.funding} committed.`,
+                });
+              }}
+            >
+              Fund This Proposal
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
     </DashboardShell>
   );
 }
