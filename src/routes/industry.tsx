@@ -218,18 +218,11 @@ function IndustryPage() {
                       Not Selected
                     </span>
                   ) : (
-                    <Button
-                      variant="accent"
-                      onClick={() => {
-                        setFundedId(pr.id);
-                        toast.success(`Funding confirmed`, {
-                          description: `${pr.university} — ${pr.funding} committed.`,
-                        });
-                      }}
-                    >
-                      Fund This Proposal
+                    <Button variant="outline" onClick={() => setDetailId(pr.id)}>
+                      <Eye className="size-4" /> View Details
                     </Button>
                   )}
+
                 </div>
               );
             })}
