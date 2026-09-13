@@ -113,7 +113,8 @@ const CHART_COLORS = [
 ];
 
 function GovernmentPage() {
-  const [dept, setDept] = useState<(typeof DEPARTMENTS)[number] | null>(null);
+  const t = useT();
+  const [dept, setDept] = useState<(typeof DEPT_OPTIONS)[number] | null>(null);
   const [active, setActive] = useState("overview");
   const [verifying, setVerifying] = useState<DeptProblem | null>(null);
 
