@@ -4,6 +4,8 @@
 Smart India Hackathon 2026 — Problem Statement #26043
 **Theme:** Smart Education · **Category:** Software · **Team:** Vector
 
+**Live Demo:** [J-SIC Portal — Turning Local Problems into Innovation](https://j-sic-portal.vercel.app/)
+
 ## Problem Statement
 
 A digital platform to crowdsource societal challenges and facilitate collaborative problem solving through universities and industry partnerships.
