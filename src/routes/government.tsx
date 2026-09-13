@@ -93,7 +93,16 @@ const DEPT_ICONS: Record<string, LucideIcon> = {
   Tractor,
   Leaf,
   HardHat,
+  Layers,
 };
+
+const CONSOLIDATED_OPTION = {
+  id: CONSOLIDATED_ID,
+  name: "General / Consolidated View",
+  icon: "Layers",
+};
+
+const DEPT_OPTIONS = [CONSOLIDATED_OPTION, ...DEPARTMENTS];
 
 const CHART_COLORS = [
   "var(--color-chart-1)",
