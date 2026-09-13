@@ -20,6 +20,7 @@ import {
   IndianRupee,
   Map as MapIcon,
   ArrowRight,
+  Layers,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -55,7 +56,14 @@ import {
 import { UpvoteBadge } from "@/components/UpvoteBadge";
 import { DomainBadge } from "@/components/DomainBadge";
 import { JharkhandMap } from "@/components/JharkhandMap";
-import { DEPARTMENTS, DEPT_DATA, type DeptProblem } from "@/lib/jsic-data";
+import {
+  DEPARTMENTS,
+  DEPT_DATA,
+  CONSOLIDATED_ID,
+  buildConsolidatedData,
+  type DeptProblem,
+} from "@/lib/jsic-data";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/government")({
   head: () => ({
