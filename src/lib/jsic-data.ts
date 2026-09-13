@@ -899,3 +899,87 @@ export const DEPT_DATA: Record<string, DeptData> = {
   },
 };
 
+
+/** Consolidated view across every department. */
+export const CONSOLIDATED_ID = "all";
+
+function mergeSeries(pick: (d: DeptData) => { name: string; value: number }[]) {
+  const map = new Map<string, number>();
+  for (const d of Object.values(DEPT_DATA)) {
+    for (const row of pick(d)) map.set(row.name, (map.get(row.name) ?? 0) + row.value);
+  }
+  return [...map.entries()].map(([name, value]) => ({ name, value }));
+}
+
+function parseCrore(text: string): number {
+  const n = Number(text.replace(/[^0-9.]/g, ""));
+  if (Number.isNaN(n)) return 0;
+  return text.includes("L") ? n / 100 : n;
+}
+
+export function buildConsolidatedData(): DeptData {
+  const all = Object.values(DEPT_DATA);
+
+  const total = all.reduce((s, d) => s + d.total, 0);
+  const verified = all.reduce((s, d) => s + d.verified, 0);
+  const pending = all.reduce((s, d) => s + d.pending, 0);
+  const fundingCr = all.reduce((s, d) => s + parseCrore(d.funding), 0);
+
+  const heatMap = new Map<string, number>();
+  for (const d of all) {
+    for (const h of d.heat) heatMap.set(h.name, (heatMap.get(h.name) ?? 0) + h.count);
+  }
+  const heat = [...heatMap.entries()]
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 6);
+
+  const uniMap = new Map<string, { completed: number; fundedCr: number; rate: number; n: number }>();
+  for (const d of all) {
+    for (const u of d.universities) {
+      const prev = uniMap.get(u.name) ?? { completed: 0, fundedCr: 0, rate: 0, n: 0 };
+      uniMap.set(u.name, {
+        completed: prev.completed + u.completed,
+        fundedCr: prev.fundedCr + parseCrore(u.funded),
+        rate: prev.rate + Number(u.rate.replace("%", "")),
+        n: prev.n + 1,
+      });
+    }
+  }
+  const universities = [...uniMap.entries()]
+    .map(([name, v]) => ({
+      name,
+      completed: v.completed,
+      funded: `₹ ${v.fundedCr.toFixed(2)} Cr`,
+      rate: `${Math.round(v.rate / Math.max(v.n, 1))}%`,
+    }))
+    .sort((a, b) => b.completed - a.completed)
+    .slice(0, 6);
+
+  const categories = mergeSeries((d) => d.categories)
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 7);
+
+  const problems = all
+    .flatMap((d) => d.problems.filter((p) => p.claim).slice(0, 1))
+    .concat(all.flatMap((d) => d.problems.filter((p) => !p.claim).slice(0, 1)))
+    .slice(0, 10);
+
+  const worstUnfunded = all
+    .map((d) => d.unfunded)
+    .sort((a, b) => b.upvotes - a.upvotes)[0]!;
+
+  return {
+    total,
+    verified,
+    pending,
+    resolutionRate: `${Math.round((verified / Math.max(total, 1)) * 100)}%`,
+    funding: `₹ ${fundingCr.toFixed(2)} Cr`,
+    categories,
+    status: mergeSeries((d) => d.status),
+    heat,
+    problems,
+    unfunded: worstUnfunded,
+    universities,
+  };
+}
