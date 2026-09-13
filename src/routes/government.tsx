@@ -167,15 +167,19 @@ function GovernmentPage() {
     );
   }
 
-  const data = DEPT_DATA[dept.id] ?? DEPT_DATA["agri"]!;
+  const isConsolidated = dept.id === CONSOLIDATED_ID;
+  const data = isConsolidated
+    ? buildConsolidatedData()
+    : (DEPT_DATA[dept.id] ?? DEPT_DATA["agri"]!);
   const DeptIcon = DEPT_ICONS[dept.icon] ?? Building2;
   const pendingCount = data.problems.filter((p) => p.claim).length;
+  const scopeName = isConsolidated ? "all departments" : dept.name;
 
   const ITEMS: SideItem[] = [
     { id: "overview", label: "Analytics Overview", icon: BarChart3 },
     {
       id: "verify",
-      label: "Department Problems",
+      label: isConsolidated ? "All Problems" : "Department Problems",
       icon: ClipboardCheck,
       badge: String(pendingCount),
     },
@@ -184,7 +188,7 @@ function GovernmentPage() {
 
   const KPIS = [
     {
-      label: `Total Problems · ${dept.name}`,
+      label: `${t("Total Problems")} · ${isConsolidated ? t("General / Consolidated View") : dept.name}`,
       value: String(data.total),
       icon: BarChart3,
       tone: "text-primary",
