@@ -20,6 +20,7 @@ import {
   IndianRupee,
   Map as MapIcon,
   ArrowRight,
+  Layers,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -55,7 +56,14 @@ import {
 import { UpvoteBadge } from "@/components/UpvoteBadge";
 import { DomainBadge } from "@/components/DomainBadge";
 import { JharkhandMap } from "@/components/JharkhandMap";
-import { DEPARTMENTS, DEPT_DATA, type DeptProblem } from "@/lib/jsic-data";
+import {
+  DEPARTMENTS,
+  DEPT_DATA,
+  CONSOLIDATED_ID,
+  buildConsolidatedData,
+  type DeptProblem,
+} from "@/lib/jsic-data";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/government")({
   head: () => ({
@@ -85,7 +93,16 @@ const DEPT_ICONS: Record<string, LucideIcon> = {
   Tractor,
   Leaf,
   HardHat,
+  Layers,
 };
+
+const CONSOLIDATED_OPTION = {
+  id: CONSOLIDATED_ID,
+  name: "General / Consolidated View",
+  icon: "Layers",
+};
+
+const DEPT_OPTIONS = [CONSOLIDATED_OPTION, ...DEPARTMENTS];
 
 const CHART_COLORS = [
   "var(--color-chart-1)",
@@ -96,7 +113,8 @@ const CHART_COLORS = [
 ];
 
 function GovernmentPage() {
-  const [dept, setDept] = useState<(typeof DEPARTMENTS)[number] | null>(null);
+  const t = useT();
+  const [dept, setDept] = useState<(typeof DEPT_OPTIONS)[number] | null>(null);
   const [active, setActive] = useState("overview");
   const [verifying, setVerifying] = useState<DeptProblem | null>(null);
 
@@ -109,15 +127,16 @@ function GovernmentPage() {
               <ShieldCheck className="size-3.5" /> Government of Jharkhand · Nodal login
             </span>
             <h1 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
-              Select your department
+              {t("Select your department")}
             </h1>
             <p className="mt-2 text-sm text-muted-foreground">
               Analytics, verification queues and funding are scoped to the department you enter as.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
-            {DEPARTMENTS.map((d) => {
+            {DEPT_OPTIONS.map((d) => {
               const Icon = DEPT_ICONS[d.icon] ?? Building2;
+              const isAll = d.id === CONSOLIDATED_ID;
               return (
                 <button
                   key={d.id}
@@ -125,14 +144,18 @@ function GovernmentPage() {
                     setDept(d);
                     setActive("overview");
                   }}
-                  className="surface-card group flex items-center gap-4 p-5 text-left transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-lift)]"
+                  className={`surface-card group flex items-center gap-4 p-5 text-left transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-lift)] ${
+                    isAll ? "border-primary/40 sm:col-span-2" : ""
+                  }`}
                 >
                   <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                     <Icon className="size-5" />
                   </span>
                   <span className="flex-1">
-                    <span className="block font-semibold">{d.name}</span>
-                    <span className="text-xs text-muted-foreground">Nodal officer access</span>
+                    <span className="block font-semibold">{t(d.name)}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {isAll ? "All departments across Jharkhand" : "Nodal officer access"}
+                    </span>
                   </span>
                   <ArrowRight className="size-4 text-accent transition-transform group-hover:translate-x-1" />
                 </button>
@@ -144,15 +167,19 @@ function GovernmentPage() {
     );
   }
 
-  const data = DEPT_DATA[dept.id] ?? DEPT_DATA["agri"]!;
+  const isConsolidated = dept.id === CONSOLIDATED_ID;
+  const data = isConsolidated
+    ? buildConsolidatedData()
+    : (DEPT_DATA[dept.id] ?? DEPT_DATA["agri"]!);
   const DeptIcon = DEPT_ICONS[dept.icon] ?? Building2;
   const pendingCount = data.problems.filter((p) => p.claim).length;
+  const scopeName = isConsolidated ? "all departments" : dept.name;
 
   const ITEMS: SideItem[] = [
     { id: "overview", label: "Analytics Overview", icon: BarChart3 },
     {
       id: "verify",
-      label: "Department Problems",
+      label: isConsolidated ? "All Problems" : "Department Problems",
       icon: ClipboardCheck,
       badge: String(pendingCount),
     },
@@ -161,7 +188,7 @@ function GovernmentPage() {
 
   const KPIS = [
     {
-      label: `Total Problems · ${dept.name}`,
+      label: `${t("Total Problems")} · ${isConsolidated ? t("General / Consolidated View") : dept.name}`,
       value: String(data.total),
       icon: BarChart3,
       tone: "text-primary",
