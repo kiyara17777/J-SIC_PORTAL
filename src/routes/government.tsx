@@ -194,13 +194,13 @@ function GovernmentPage() {
       tone: "text-primary",
     },
     {
-      label: "Verified vs Pending",
+      label: t("Verified vs Pending"),
       value: `${data.verified} / ${data.pending}`,
       icon: CheckCircle2,
       tone: "text-success",
     },
-    { label: "Resolution Rate", value: data.resolutionRate, icon: Clock3, tone: "text-accent" },
-    { label: "Funding Routed", value: data.funding, icon: IndianRupee, tone: "text-primary" },
+    { label: t("Resolution Rate"), value: data.resolutionRate, icon: Clock3, tone: "text-accent" },
+    { label: t("Funding Routed"), value: data.funding, icon: IndianRupee, tone: "text-primary" },
   ];
 
   const DeptHeader = (
@@ -210,12 +210,12 @@ function GovernmentPage() {
       </span>
       <div>
         <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-          Signed in as
+          {t("Signed in as")}
         </p>
-        <p className="font-semibold">{dept.name}</p>
+        <p className="font-semibold">{isConsolidated ? t(dept.name) : dept.name}</p>
       </div>
       <Button variant="outline" size="sm" className="ml-auto" onClick={() => setDept(null)}>
-        Switch department
+        {t("Switch department")}
       </Button>
     </div>
   );
@@ -223,7 +223,7 @@ function GovernmentPage() {
   return (
     <DashboardShell
       roleLabel="Government"
-      title={dept.name}
+      title={isConsolidated ? t(dept.name) : dept.name}
       subtitle="Nodal officer · Jharkhand"
       items={ITEMS}
       active={active}
@@ -235,7 +235,7 @@ function GovernmentPage() {
         <>
           <SectionHeader
             title="Analytics Overview"
-            description={`Problems, funding and verification status for the ${dept.name}.`}
+            description={`Problems, funding and verification status across ${scopeName}.`}
           />
 
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
