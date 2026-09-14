@@ -127,12 +127,13 @@ export function DashboardShell({
   roleLabel: string;
 }) {
   const [open, setOpen] = useState(false);
+  const t = useT();
 
   const nav = (
     <div className="flex h-full flex-col gap-6 p-4">
       <div className="rounded-xl bg-sidebar-accent/60 p-3">
         <p className="text-[11px] font-semibold uppercase tracking-wider text-sidebar-primary">
-          {roleLabel}
+          {t(roleLabel)}
         </p>
         <p className="mt-1 text-sm font-semibold text-sidebar-foreground">{title}</p>
         {subtitle && <p className="mt-0.5 text-xs text-sidebar-foreground/70">{subtitle}</p>}
@@ -153,7 +154,7 @@ export function DashboardShell({
             )}
           >
             <it.icon className="size-4 shrink-0" />
-            <span className="flex-1">{it.label}</span>
+            <span className="flex-1">{t(it.label)}</span>
             {it.badge && (
               <span className="rounded-full bg-sidebar-foreground/15 px-1.5 py-0.5 text-[11px] font-semibold">
                 {it.badge}
@@ -163,7 +164,9 @@ export function DashboardShell({
         ))}
       </nav>
       <div className="mt-auto rounded-xl border border-sidebar-border p-3 text-xs text-sidebar-foreground/70">
-        Switch roles from the top bar to move across the problem-to-solution pipeline.
+        {t(
+          "Switch roles from the top bar to move across the problem-to-solution pipeline.",
+        )}
       </div>
 
     </div>
@@ -183,7 +186,7 @@ export function DashboardShell({
               onClick={() => setOpen((v) => !v)}
               className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-sm font-medium"
             >
-              <Menu className="size-4" /> Menu
+              <Menu className="size-4" /> {t("Menu")}
             </button>
             <span className="truncate text-sm text-muted-foreground">{title}</span>
           </div>
