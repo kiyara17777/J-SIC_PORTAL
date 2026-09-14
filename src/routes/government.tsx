@@ -388,8 +388,12 @@ function GovernmentPage() {
       {active === "verify" && (
         <>
           <SectionHeader
-            title="Department Problems"
-            description={`Problems tagged to the ${dept.name}. Verify each stage change claimed by the university.`}
+            title={isConsolidated ? "All Problems" : "Department Problems"}
+            description={
+              isConsolidated
+                ? "Problems from every department. Verify each stage change claimed by the university."
+                : `Problems tagged to the ${dept.name}. Verify each stage change claimed by the university.`
+            }
           />
           <div className="surface-card overflow-hidden">
             <div className="overflow-x-auto">
@@ -445,7 +449,7 @@ function GovernmentPage() {
         <>
           <SectionHeader
             title="Top-performing Universities"
-            description={`Ranked by projects completed for the ${dept.name}.`}
+            description={`Ranked by projects completed across ${scopeName}.`}
           />
           <div className="surface-card overflow-hidden">
             <div className="overflow-x-auto">
