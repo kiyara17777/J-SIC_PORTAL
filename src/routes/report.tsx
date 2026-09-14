@@ -98,12 +98,12 @@ function ReportPage() {
         <div className="surface-card p-5 sm:p-7">
           <div className="grid gap-5">
             <div className="grid gap-2">
-              <Label htmlFor="title">Problem title</Label>
+              <Label htmlFor="title">{t("Problem title")}</Label>
               <Input id="title" placeholder="e.g. Tomato crop pest damage in Gumla" />
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="desc">Description</Label>
+              <Label htmlFor="desc">{t("Description")}</Label>
               <Textarea
                 id="desc"
                 rows={5}
@@ -113,7 +113,7 @@ function ReportPage() {
 
             <div className="grid gap-5 sm:grid-cols-2">
               <div className="grid gap-2">
-                <Label>Domain</Label>
+                <Label>{t("Domain")}</Label>
                 <Select value={domain} onValueChange={setDomain}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a domain" />
@@ -129,7 +129,7 @@ function ReportPage() {
               </div>
 
               <div className="grid gap-2">
-                <Label>District</Label>
+                <Label>{t("District")}</Label>
                 <Select value={district} onValueChange={setDistrict}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a district" />
@@ -146,7 +146,7 @@ function ReportPage() {
             </div>
 
             <div className="grid gap-2">
-              <Label>Photos</Label>
+              <Label>{t("Photos")}</Label>
               <label
                 onDragOver={(e) => {
                   e.preventDefault();
@@ -203,10 +203,10 @@ function ReportPage() {
             </div>
 
             <div className="grid gap-2">
-              <Label>Location</Label>
+              <Label>{t("Location")}</Label>
               <div className="flex flex-wrap items-center gap-3">
                 <Button type="button" variant="outline" onClick={() => setLocated(true)}>
-                  <LocateFixed className="size-4" /> Auto-detect my location
+                  <LocateFixed className="size-4" /> {t("Auto-detect my location")}
                 </Button>
                 {located && (
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-success/12 px-3 py-1 text-xs font-semibold text-success">
@@ -218,7 +218,7 @@ function ReportPage() {
 
             <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border pt-5">
               <Button size="lg" onClick={submit}>
-                <Send className="size-4" /> Submit Problem
+                <Send className="size-4" /> {t("Submit Problem")}
               </Button>
               <div className="flex items-center gap-3 rounded-lg bg-secondary/70 px-3 py-2">
                 <Switch

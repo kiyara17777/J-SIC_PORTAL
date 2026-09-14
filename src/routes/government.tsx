@@ -378,7 +378,7 @@ function GovernmentPage() {
                   })
                 }
               >
-                Escalate to funders
+                {t("Escalate to funders")}
               </Button>
             </div>
           </div>
@@ -430,7 +430,7 @@ function GovernmentPage() {
                       <TableCell className="text-right">
                         {p.claim ? (
                           <Button size="sm" onClick={() => setVerifying(p)}>
-                            <ClipboardCheck className="size-3.5" /> Verify Update
+                            <ClipboardCheck className="size-3.5" /> {t("Verify Update")}
                           </Button>
                         ) : (
                           <span className="text-xs text-muted-foreground">No pending change</span>
@@ -507,7 +507,7 @@ function GovernmentPage() {
                 setVerifying(null);
               }}
             >
-              Reject
+              {t("Reject")}
             </Button>
             <Button
               variant="success"
@@ -518,7 +518,7 @@ function GovernmentPage() {
                 setVerifying(null);
               }}
             >
-              <CheckCircle2 className="size-4" /> Approve
+              <CheckCircle2 className="size-4" /> {t("Approve")}
             </Button>
           </DialogFooter>
         </DialogContent>

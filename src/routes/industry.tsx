@@ -231,7 +231,7 @@ function IndustryPage() {
                     </span>
                   ) : (
                     <Button variant="outline" onClick={() => setDetailId(pr.id)}>
-                      <Eye className="size-4" /> View Details
+                      <Eye className="size-4" /> {t("View Details")}
                     </Button>
                   )}
 

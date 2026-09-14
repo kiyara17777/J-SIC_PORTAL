@@ -74,7 +74,7 @@ function ProposalPage() {
       <div className="grid gap-6 lg:grid-cols-[1.6fr_1fr]">
         <div className="surface-card grid gap-5 p-5 sm:p-7">
           <div className="grid gap-2">
-            <Label htmlFor="summary">Solution summary</Label>
+            <Label htmlFor="summary">{t("Solution summary")}</Label>
             <Textarea
               id="summary"
               rows={6}
@@ -84,7 +84,7 @@ function ProposalPage() {
 
           <div className="grid gap-5 sm:grid-cols-2">
             <div className="grid gap-2">
-              <Label>Stage</Label>
+              <Label>{t("Stage")}</Label>
               <Select value={stage} onValueChange={setStage}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select current stage" />
@@ -100,7 +100,7 @@ function ProposalPage() {
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="funding">Funding needed</Label>
+              <Label htmlFor="funding">{t("Funding needed")}</Label>
               <div className="relative">
                 <IndianRupee className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                 <Input id="funding" className="pl-9" placeholder="8,50,000" inputMode="numeric" />
@@ -109,7 +109,7 @@ function ProposalPage() {
           </div>
 
           <div className="grid gap-2">
-            <Label>What&apos;s needed</Label>
+            <Label>{t("What's needed")}</Label>
             <div className="flex flex-wrap gap-2">
               {NEEDS.map((n) => {
                 const on = needs.includes(n);
