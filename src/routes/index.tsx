@@ -14,6 +14,7 @@ import {
 import { PageShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/jsic-hero.jpg";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -83,6 +84,7 @@ const FLOW = [
 ];
 
 function Landing() {
+  const t = useT();
   return (
     <PageShell>
       <section className="hero-gradient relative overflow-hidden">

@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { DomainBadge } from "@/components/DomainBadge";
 import { UpvoteBadge } from "@/components/UpvoteBadge";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/proposal")({
   head: () => ({
@@ -46,6 +47,7 @@ const ITEMS: SideItem[] = [
 const NEEDS = ["Funding", "Manufacturing", "Mentorship", "Testing Site"];
 
 function ProposalPage() {
+  const t = useT();
   const navigate = useNavigate();
   const [needs, setNeeds] = useState<string[]>(["Funding"]);
   const [stage, setStage] = useState("");

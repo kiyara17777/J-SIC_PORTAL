@@ -30,6 +30,7 @@ import {
 import { UpvoteBadge } from "@/components/UpvoteBadge";
 import { DomainBadge } from "@/components/DomainBadge";
 import { PROBLEMS, PROPOSALS } from "@/lib/jsic-data";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/industry")({
   head: () => ({
@@ -74,6 +75,7 @@ const FUNDED = [
 ];
 
 function IndustryPage() {
+  const t = useT();
   const [active, setActive] = useState("open");
   const [openProblem, setOpenProblem] = useState<string | null>(null);
   const [fundedId, setFundedId] = useState<string | null>(null);

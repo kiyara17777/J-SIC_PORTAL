@@ -45,6 +45,7 @@ import {
 import { UpvoteBadge } from "@/components/UpvoteBadge";
 import { DomainBadge } from "@/components/DomainBadge";
 import { PROBLEMS } from "@/lib/jsic-data";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/university")({
   head: () => ({
@@ -110,6 +111,7 @@ function CountdownBadge({ days }: { days: number }) {
 }
 
 function UniversityPage() {
+  const t = useT();
   const [active, setActive] = useState("assigned");
   const [teamOpen, setTeamOpen] = useState(false);
   const [students, setStudents] = useState(["Ankit Oraon", "Priya Kumari", ""]);

@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { DOMAINS, DISTRICTS } from "@/lib/jsic-data";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/report")({
   head: () => ({
@@ -52,6 +53,7 @@ const ITEMS: SideItem[] = [
 ];
 
 function ReportPage() {
+  const t = useT();
   const [duplicateMode, setDuplicateMode] = useState(false);
   const [located, setLocated] = useState(false);
   const [district, setDistrict] = useState("");
