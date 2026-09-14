@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { LanguageSelector } from "@/components/LanguageSelector";
+import { useT } from "@/lib/i18n";
 
 export const ROLES = [
   { label: "Complainant", to: "/report", icon: Megaphone },
