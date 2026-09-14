@@ -144,7 +144,7 @@ function Landing() {
               </span>
               <div>
                 <p className="text-xl font-bold tabular-nums sm:text-2xl">{s.value}</p>
-                <p className="text-xs text-muted-foreground">{s.label}</p>
+                <p className="text-xs text-muted-foreground">{t(s.label)}</p>
               </div>
             </div>
           ))}
