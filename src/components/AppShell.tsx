@@ -25,6 +25,7 @@ export const ROLES = [
 export function TopNav() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [open, setOpen] = useState(false);
+  const t = useT();
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 bg-card/90 backdrop-blur">
