@@ -97,7 +97,7 @@ export function TopNav() {
                 )}
               >
                 <r.icon className="size-4" />
-                {r.label}
+                {t(r.label)}
               </Link>
             ))}
           </div>
