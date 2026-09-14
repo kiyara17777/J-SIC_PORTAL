@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { LanguageSelector } from "@/components/LanguageSelector";
+import { useT } from "@/lib/i18n";
 
 export const ROLES = [
   { label: "Complainant", to: "/report", icon: Megaphone },
@@ -23,6 +25,7 @@ export const ROLES = [
 export function TopNav() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [open, setOpen] = useState(false);
+  const t = useT();
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 bg-card/90 backdrop-blur">
@@ -32,9 +35,9 @@ export function TopNav() {
             <Landmark className="size-5" />
           </span>
           <span className="leading-tight">
-            <span className="block text-sm font-bold tracking-tight">J-SIC Portal</span>
+            <span className="block text-sm font-bold tracking-tight">{t("J-SIC Portal")}</span>
             <span className="hidden text-[11px] text-muted-foreground sm:block">
-              Jharkhand Societal Innovation Collaboration
+              {t("Jharkhand Societal Innovation Collaboration")}
             </span>
           </span>
         </Link>
@@ -54,14 +57,16 @@ export function TopNav() {
                 )}
               >
                 <r.icon className="size-4" />
-                {r.label}
+                {t(r.label)}
               </Link>
             );
           })}
         </nav>
 
-        <Button asChild size="sm" className="ml-auto hidden lg:ml-0 lg:inline-flex">
-          <Link to="/report">Report a Problem</Link>
+        <LanguageSelector className="ml-auto hidden lg:ml-2 lg:inline-flex" />
+
+        <Button asChild size="sm" className="hidden lg:inline-flex">
+          <Link to="/report">{t("Report a Problem")}</Link>
         </Button>
 
         <button
@@ -75,6 +80,9 @@ export function TopNav() {
 
       {open && (
         <div className="border-t border-border bg-card px-4 py-3 lg:hidden">
+          <div className="mb-2">
+            <LanguageSelector className="w-full justify-start" />
+          </div>
           <div className="grid gap-1">
             {ROLES.map((r) => (
               <Link
@@ -89,7 +97,7 @@ export function TopNav() {
                 )}
               >
                 <r.icon className="size-4" />
-                {r.label}
+                {t(r.label)}
               </Link>
             ))}
           </div>
@@ -119,12 +127,13 @@ export function DashboardShell({
   roleLabel: string;
 }) {
   const [open, setOpen] = useState(false);
+  const t = useT();
 
   const nav = (
     <div className="flex h-full flex-col gap-6 p-4">
       <div className="rounded-xl bg-sidebar-accent/60 p-3">
         <p className="text-[11px] font-semibold uppercase tracking-wider text-sidebar-primary">
-          {roleLabel}
+          {t(roleLabel)}
         </p>
         <p className="mt-1 text-sm font-semibold text-sidebar-foreground">{title}</p>
         {subtitle && <p className="mt-0.5 text-xs text-sidebar-foreground/70">{subtitle}</p>}
@@ -145,7 +154,7 @@ export function DashboardShell({
             )}
           >
             <it.icon className="size-4 shrink-0" />
-            <span className="flex-1">{it.label}</span>
+            <span className="flex-1">{t(it.label)}</span>
             {it.badge && (
               <span className="rounded-full bg-sidebar-foreground/15 px-1.5 py-0.5 text-[11px] font-semibold">
                 {it.badge}
@@ -155,7 +164,9 @@ export function DashboardShell({
         ))}
       </nav>
       <div className="mt-auto rounded-xl border border-sidebar-border p-3 text-xs text-sidebar-foreground/70">
-        Switch roles from the top bar to move across the problem-to-solution pipeline.
+        {t(
+          "Switch roles from the top bar to move across the problem-to-solution pipeline.",
+        )}
       </div>
 
     </div>
@@ -175,7 +186,7 @@ export function DashboardShell({
               onClick={() => setOpen((v) => !v)}
               className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-sm font-medium"
             >
-              <Menu className="size-4" /> Menu
+              <Menu className="size-4" /> {t("Menu")}
             </button>
             <span className="truncate text-sm text-muted-foreground">{title}</span>
           </div>

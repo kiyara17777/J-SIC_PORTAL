@@ -194,13 +194,13 @@ function GovernmentPage() {
       tone: "text-primary",
     },
     {
-      label: "Verified vs Pending",
+      label: t("Verified vs Pending"),
       value: `${data.verified} / ${data.pending}`,
       icon: CheckCircle2,
       tone: "text-success",
     },
-    { label: "Resolution Rate", value: data.resolutionRate, icon: Clock3, tone: "text-accent" },
-    { label: "Funding Routed", value: data.funding, icon: IndianRupee, tone: "text-primary" },
+    { label: t("Resolution Rate"), value: data.resolutionRate, icon: Clock3, tone: "text-accent" },
+    { label: t("Funding Routed"), value: data.funding, icon: IndianRupee, tone: "text-primary" },
   ];
 
   const DeptHeader = (
@@ -210,12 +210,12 @@ function GovernmentPage() {
       </span>
       <div>
         <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-          Signed in as
+          {t("Signed in as")}
         </p>
-        <p className="font-semibold">{dept.name}</p>
+        <p className="font-semibold">{isConsolidated ? t(dept.name) : dept.name}</p>
       </div>
       <Button variant="outline" size="sm" className="ml-auto" onClick={() => setDept(null)}>
-        Switch department
+        {t("Switch department")}
       </Button>
     </div>
   );
@@ -223,7 +223,7 @@ function GovernmentPage() {
   return (
     <DashboardShell
       roleLabel="Government"
-      title={dept.name}
+      title={isConsolidated ? t(dept.name) : dept.name}
       subtitle="Nodal officer · Jharkhand"
       items={ITEMS}
       active={active}
@@ -235,7 +235,7 @@ function GovernmentPage() {
         <>
           <SectionHeader
             title="Analytics Overview"
-            description={`Problems, funding and verification status for the ${dept.name}.`}
+            description={`Problems, funding and verification status across ${scopeName}.`}
           />
 
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -378,7 +378,7 @@ function GovernmentPage() {
                   })
                 }
               >
-                Escalate to funders
+                {t("Escalate to funders")}
               </Button>
             </div>
           </div>
@@ -388,8 +388,12 @@ function GovernmentPage() {
       {active === "verify" && (
         <>
           <SectionHeader
-            title="Department Problems"
-            description={`Problems tagged to the ${dept.name}. Verify each stage change claimed by the university.`}
+            title={isConsolidated ? "All Problems" : "Department Problems"}
+            description={
+              isConsolidated
+                ? "Problems from every department. Verify each stage change claimed by the university."
+                : `Problems tagged to the ${dept.name}. Verify each stage change claimed by the university.`
+            }
           />
           <div className="surface-card overflow-hidden">
             <div className="overflow-x-auto">
@@ -426,7 +430,7 @@ function GovernmentPage() {
                       <TableCell className="text-right">
                         {p.claim ? (
                           <Button size="sm" onClick={() => setVerifying(p)}>
-                            <ClipboardCheck className="size-3.5" /> Verify Update
+                            <ClipboardCheck className="size-3.5" /> {t("Verify Update")}
                           </Button>
                         ) : (
                           <span className="text-xs text-muted-foreground">No pending change</span>
@@ -445,7 +449,7 @@ function GovernmentPage() {
         <>
           <SectionHeader
             title="Top-performing Universities"
-            description={`Ranked by projects completed for the ${dept.name}.`}
+            description={`Ranked by projects completed across ${scopeName}.`}
           />
           <div className="surface-card overflow-hidden">
             <div className="overflow-x-auto">
@@ -503,7 +507,7 @@ function GovernmentPage() {
                 setVerifying(null);
               }}
             >
-              Reject
+              {t("Reject")}
             </Button>
             <Button
               variant="success"
@@ -514,7 +518,7 @@ function GovernmentPage() {
                 setVerifying(null);
               }}
             >
-              <CheckCircle2 className="size-4" /> Approve
+              <CheckCircle2 className="size-4" /> {t("Approve")}
             </Button>
           </DialogFooter>
         </DialogContent>

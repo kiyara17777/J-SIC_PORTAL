@@ -14,6 +14,7 @@ import {
 import { PageShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/jsic-hero.jpg";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -83,6 +84,7 @@ const FLOW = [
 ];
 
 function Landing() {
+  const t = useT();
   return (
     <PageShell>
       <section className="hero-gradient relative overflow-hidden">
@@ -105,11 +107,11 @@ function Landing() {
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg" variant="accent">
                 <Link to="/report">
-                  Report a Problem <ArrowRight className="size-4" />
+                  {t("Report a Problem")} <ArrowRight className="size-4" />
                 </Link>
               </Button>
               <Button asChild size="lg" variant="onDark">
-                <Link to="/industry">Explore Projects</Link>
+                <Link to="/industry">{t("Explore Projects")}</Link>
               </Button>
             </div>
           </div>
@@ -142,7 +144,7 @@ function Landing() {
               </span>
               <div>
                 <p className="text-xl font-bold tabular-nums sm:text-2xl">{s.value}</p>
-                <p className="text-xs text-muted-foreground">{s.label}</p>
+                <p className="text-xs text-muted-foreground">{t(s.label)}</p>
               </div>
             </div>
           ))}
@@ -150,7 +152,7 @@ function Landing() {
       </section>
 
       <section className="mx-auto max-w-[1400px] px-4 py-14 sm:px-6 lg:py-20">
-        <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Choose your role</h2>
+        <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">{t("Choose your role")}</h2>
         <p className="mt-1 text-sm text-muted-foreground">
           Four dashboards, one problem pipeline. Every role sees the same problem at a different
           stage.

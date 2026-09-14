@@ -45,6 +45,7 @@ import {
 import { UpvoteBadge } from "@/components/UpvoteBadge";
 import { DomainBadge } from "@/components/DomainBadge";
 import { PROBLEMS } from "@/lib/jsic-data";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/university")({
   head: () => ({
@@ -110,6 +111,7 @@ function CountdownBadge({ days }: { days: number }) {
 }
 
 function UniversityPage() {
+  const t = useT();
   const [active, setActive] = useState("assigned");
   const [teamOpen, setTeamOpen] = useState(false);
   const [students, setStudents] = useState(["Ankit Oraon", "Priya Kumari", ""]);
@@ -131,7 +133,7 @@ function UniversityPage() {
             description="Matched to your institution by expertise-fit. Submit a proposal before the window closes."
             action={
               <Button onClick={() => setTeamOpen(true)}>
-                <Users className="size-4" /> Create Team
+                <Users className="size-4" /> {t("Create Team")}
               </Button>
             }
           />
@@ -170,7 +172,7 @@ function UniversityPage() {
                           {p.daysLeft > 0 ? (
                             <Button asChild size="sm">
                               <Link to="/proposal">
-                                <Send className="size-3.5" /> Submit Proposal
+                                <Send className="size-3.5" /> {t("Submit Proposal")}
                               </Link>
                             </Button>
                           ) : (
@@ -200,7 +202,7 @@ function UniversityPage() {
             action={
               <Button asChild>
                 <Link to="/proposal">
-                  <Plus className="size-4" /> New Proposal
+                  <Plus className="size-4" /> {t("New Proposal")}
                 </Link>
               </Button>
             }
@@ -295,7 +297,7 @@ function UniversityPage() {
       <Dialog open={teamOpen} onOpenChange={setTeamOpen}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>Create Team</DialogTitle>
+            <DialogTitle>{t("Create Team")}</DialogTitle>
             <DialogDescription>
               Add student members and assign a faculty mentor for this problem.
             </DialogDescription>
@@ -303,7 +305,7 @@ function UniversityPage() {
 
           <div className="grid gap-4">
             <div className="grid gap-2">
-              <Label>Student members</Label>
+              <Label>{t("Student members")}</Label>
               {students.map((s, i) => (
                 <div key={i} className="flex gap-2">
                   <Input
@@ -334,7 +336,7 @@ function UniversityPage() {
             </div>
 
             <div className="grid gap-2">
-              <Label>Faculty mentor</Label>
+              <Label>{t("Faculty mentor")}</Label>
               <Select value={mentor} onValueChange={setMentor}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select a faculty mentor" />
