@@ -35,9 +35,9 @@ export function TopNav() {
             <Landmark className="size-5" />
           </span>
           <span className="leading-tight">
-            <span className="block text-sm font-bold tracking-tight">J-SIC Portal</span>
+            <span className="block text-sm font-bold tracking-tight">{t("J-SIC Portal")}</span>
             <span className="hidden text-[11px] text-muted-foreground sm:block">
-              Jharkhand Societal Innovation Collaboration
+              {t("Jharkhand Societal Innovation Collaboration")}
             </span>
           </span>
         </Link>
@@ -57,14 +57,16 @@ export function TopNav() {
                 )}
               >
                 <r.icon className="size-4" />
-                {r.label}
+                {t(r.label)}
               </Link>
             );
           })}
         </nav>
 
-        <Button asChild size="sm" className="ml-auto hidden lg:ml-0 lg:inline-flex">
-          <Link to="/report">Report a Problem</Link>
+        <LanguageSelector className="ml-auto hidden lg:ml-2 lg:inline-flex" />
+
+        <Button asChild size="sm" className="hidden lg:inline-flex">
+          <Link to="/report">{t("Report a Problem")}</Link>
         </Button>
 
         <button
@@ -78,6 +80,9 @@ export function TopNav() {
 
       {open && (
         <div className="border-t border-border bg-card px-4 py-3 lg:hidden">
+          <div className="mb-2">
+            <LanguageSelector className="w-full justify-start" />
+          </div>
           <div className="grid gap-1">
             {ROLES.map((r) => (
               <Link
